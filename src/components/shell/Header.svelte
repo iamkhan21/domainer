@@ -19,7 +19,11 @@
   </nav>
 </header>
 
-<style>
+<style lang="postcss">
+  h1 {
+    @apply text-2xl font-black;
+  }
+
   .active {
     font-weight: bold;
   }
