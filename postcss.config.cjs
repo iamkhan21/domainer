@@ -4,8 +4,7 @@ const dev = mode === "development";
 module.exports = {
   plugins: [
     require("postcss-nested"),
-    require("autoprefixer"),
     require("postcss-import"),
-    !dev && require("cssnano")
+    require("autoprefixer")
   ],
 };
