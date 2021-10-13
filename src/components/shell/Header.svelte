@@ -1,11 +1,8 @@
 <script lang="ts">
   import { isActive, url } from "@roxi/routify";
+  import {links} from "../../configs/routes";
 
-  const links = [
-    ["/index", "Home"],
-    ["/about", "About"],
-    ["/contact", "Contact"],
-  ];
+
 </script>
 
 <header>
