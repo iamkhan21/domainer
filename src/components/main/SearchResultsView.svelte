@@ -27,3 +27,11 @@
 <section>
   <svelte:component this={result} />
 </section>
+
+<style>
+  section {
+    max-height: max(75vh, 350px);
+    overflow-y: auto;
+    padding-inline:0 10px;
+  }
+</style>
