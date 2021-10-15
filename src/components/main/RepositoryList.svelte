@@ -1,18 +1,23 @@
 <script lang="ts">
-  import { get } from "svelte/store";
   import { repositories } from "../../stores/repositories";
   import RepositoryCard from "./RepositoryCard.svelte";
+  import InfiniteLoading from "svelte-infinite-loading";
 
-  const { data } = get(repositories);
+  let username = "";
+  let repos = [];
+  let loadMore = () => {};
+
+  repositories.subscribe((value) => {
+    ({ username, repositories: repos, loadMore } = value.data);
+  });
 </script>
 
-{#each data.repositories as repo (repo.id)}
-  <RepositoryCard {repo} />
+{#if repos.length}
+  {#each repos as repo (repo.id)}
+    <RepositoryCard {repo} />
+  {/each}
+  <InfiniteLoading on:infinite={loadMore} />
 {:else}
   <h3>Nothing..</h3>
-  <p>Can't find any public repositories from {data.username}</p>
-{/each}
-
-<style lang="postcss">
-
-</style>
+  <p>Can't find any public repositories from {username}</p>
+{/if}
