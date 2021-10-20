@@ -1,23 +1,12 @@
-<script lang="ts" context="module">
-  const mode = process.env.NODE_ENV;
-  const dev = mode === "development";
-
-  const server = dev
-    ? "http://127.0.0.1:8787"
-    : "https://domainer-api.domainer-api.workers.dev";
-</script>
-
 <script lang="ts">
   import SearchCard from "../components/main/SearchCard.svelte";
   import { SearchViewState } from "../domains/states";
   import SearchResultsView from "../components/main/SearchResultsView.svelte";
   import { repositories } from "../stores/repositories";
-  import { of } from "await-of";
-  import ky from "ky";
   import { get } from "svelte/store";
+  import { fetchUserPublicRepos } from "../domains/api";
 
   let state: SearchViewState = SearchViewState.initial;
-  let curUsername = "";
 
   async function loadMore({ detail: { loaded, complete, error } }) {
     const {
@@ -27,9 +16,7 @@
       },
     } = get(repositories);
 
-    const [response, err] = await of(
-      ky.get(`${server}/api/projects/${username}/${endCursor}`).json()
-    );
+    const [response, err] = await fetchUserPublicRepos(username, endCursor);
 
     if (err) return error();
 
@@ -45,17 +32,11 @@
   }
 
   async function fetchRepos(username: string) {
-    if (curUsername === username) {
-      return;
-    } else {
-      curUsername = username.trim();
-    }
+    const curUsername = username.trim();
 
     state = SearchViewState.loading;
 
-    const [response, error] = await of(
-      ky.get(`${server}/api/projects/${curUsername}`).json()
-    );
+    const [response, error] = await fetchUserPublicRepos(curUsername);
 
     if (error) {
       repositories.set({ data: error.message });

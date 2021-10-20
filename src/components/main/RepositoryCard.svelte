@@ -25,12 +25,8 @@
 </section>
 
 <style lang="postcss">
-  :global(.repo-card + .repo-card) {
-    margin-top: 15px;
-  }
-
   .repo-card {
-    @apply py-2 px-4 border rounded max-w-screen-sm shadow-md;
+    @apply py-2 px-4 mb-4 border rounded max-w-screen-sm shadow-md;
 
     &--header {
       @apply flex items-baseline;
